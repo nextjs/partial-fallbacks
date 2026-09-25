@@ -44,6 +44,7 @@ async function ProductList({
           <li key={product.slug}>
             <Link
               href={`/${category}/${product.slug}`}
+              prefetch={true}
               className="block rounded-lg border border-zinc-200 p-4 hover:border-zinc-400 dark:border-zinc-800 dark:hover:border-zinc-600"
             >
               <h2 className="font-semibold">{product.name}</h2>

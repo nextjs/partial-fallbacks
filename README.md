@@ -1,6 +1,6 @@
 # Partial Fallbacks Demo
 
-A Next.js demo of [Incremental Static Regeneration](https://nextjs.org/docs/app/guides/incremental-static-regeneration) with [Cache Components](https://nextjs.org/docs/app/api-reference/config/next-config-js/cacheComponents) and `experimental.partialFallbacks`.
+A Next.js demo of [Incremental Static Regeneration](https://nextjs.org/docs/app/guides/incremental-static-regeneration) with [Cache Components](https://nextjs.org/docs/app/api-reference/config/next-config-js/cacheComponents) and [Partial Prefetching](https://nextjs.org/docs/app/api-reference/config/next-config-js/partialPrefetching).
 
 - **Live demo**: https://partial-fallbacks.labs.vercel.dev/
 - **Guide**: [ISR with Cache Components](https://nextjs.org/docs/app/guides/incremental-static-regeneration-cache-components)
@@ -49,6 +49,8 @@ At build time, `generateStaticParams` returns the top 2 categories (`tops`, `sho
 
 **After the first visit**: Next.js renders the page in the background with the now-known params. Subsequent visitors get a more specific shell (or a fully static page if all data is cached).
 
+**Client-side navigation**: links to these pages use `<Link prefetch={true}>`, so navigation lands on the prerendered or upgraded page. A default `<Link>` prefetches only the App Shell, which links to the same route share.
+
 ## The suffix demo
 
 The home page has a "Random suffix demo" section with a re-roll button. Clicking it sets a cookie with a random 4-character suffix. Category links in that section are decorated with the suffix, e.g. `/shoes-abc1`.
@@ -56,6 +58,8 @@ The home page has a "Random suffix demo" section with a re-roll button. Clicking
 Visiting a suffixed URL goes through the generic `/[category]` fallback shell because the suffixed slug was never prerendered. The category layout renders with its header in Suspense, and the category data (stripped of the suffix server-side) streams in.
 
 Re-roll to get a fresh suffix and try again. The cookie persists across reloads so you can see the upgrade happen (first visit = fallback, reload = cached).
+
+The link's prefetch counts as the first visit, so to see the fallback shell, click before the prefetch finishes or open the suffixed URL directly.
 
 ## Cache Components discipline
 
@@ -112,7 +116,7 @@ export default function CategoryPage(props: PageProps<"/[category]">) {
 
 Kicking off `fetchProducts` at the top lets the request start before `InventoryCheck` mounts, so one suspension does not delay the other. The inner Suspense is nested inside `ProductList` on purpose: when the list is waiting on the static shell, we do not want a second "Checking inventory..." spinner next to "Loading products...". Nesting keeps the visible loading state to one at a time.
 
-**Suffix stripping in the data layer.** Because category links can carry a `-abc1` suffix, `getCategory`, `getProduct`, and `fetchProducts` strip the trailing 4-char suffix before calling the real API. The suffix exists only to make each click a first-visit fallback shell.
+**Suffix stripping in the data layer.** Because category links can carry a `-abc1` suffix, `getCategory`, `getProduct`, and `fetchProducts` strip the trailing 4-char suffix before calling the real API. The suffix exists only to make each suffixed URL a first visit.
 
 ## Getting started
 
