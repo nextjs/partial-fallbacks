@@ -75,6 +75,7 @@ async function CategoryList() {
         <li key={category.slug}>
           <Link
             href={`/${category.slug}`}
+            prefetch={true}
             className="block rounded-lg border border-zinc-200 p-6 hover:border-zinc-400 dark:border-zinc-800 dark:hover:border-zinc-600"
           >
             <h2 className="text-lg font-semibold">{category.name}</h2>
@@ -121,6 +122,7 @@ async function SuffixedCategories() {
         <li key={category.slug}>
           <Link
             href={`/${category.slug}`}
+            prefetch={true}
             className="block rounded-lg border border-dashed border-zinc-300 p-4 hover:border-zinc-500 dark:border-zinc-700 dark:hover:border-zinc-500"
           >
             <h2 className="font-semibold">
