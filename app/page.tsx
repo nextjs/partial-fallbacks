@@ -49,10 +49,10 @@ export default function Home() {
         <p>
           Source:{" "}
           <a
-            href="https://github.com/vercel-labs/partial-fallbacks"
+            href="https://github.com/nextjs/partial-fallbacks"
             className="underline hover:text-zinc-700 dark:hover:text-zinc-300"
           >
-            github.com/vercel-labs/partial-fallbacks
+            github.com/nextjs/partial-fallbacks
           </a>
         </p>
       </footer>
